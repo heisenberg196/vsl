@@ -13,7 +13,7 @@ class VehicleCount(object):
 
     pos_linha=550 
     frame2 = None
-    delay= 6 
+    delay= 120
     detec = []
     carros= 0
     subtracao = cv2.createBackgroundSubtractorMOG2()
@@ -22,6 +22,7 @@ class VehicleCount(object):
     def __init__(self):
         self.cap = cv2.VideoCapture(self.file)
         (self.ret, self.frame1) = self.cap.read()
+        self.frame2 = self.frame1
         threading.Thread(target=self.update, args=()).start()
 
     def __del__(self):
@@ -35,7 +36,7 @@ class VehicleCount(object):
         return cx,cy
 
     def get_frame(self):
-        image = self.frame1
+        image = self.frame2
         _, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
 
@@ -72,3 +73,4 @@ class VehicleCount(object):
                         self.detec.remove((x,y))
                         print("car is detected : "+str(self.carros))        
             cv2.putText(self.frame1, "VEHICLE COUNT : "+str(self.carros), (450, 70), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255),5)
+            self.frame2 = self.frame1

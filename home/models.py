@@ -5,5 +5,5 @@ from django.utils.translation import gettext as _
 
 class vidFile(models.Model):
     file = models.FileField(_("Video File"), upload_to='traffic-feed')
-    location = models.CharField(max_length=128, blank=True, null=True)
+    location = models.CharField(max_length=64, default="Delhi")
     
