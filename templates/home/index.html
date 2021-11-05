@@ -1,65 +1,69 @@
 <!DOCTYPE html>
-<html>
-<style>
-        body {
-            margin: 0; /* Reset default margin */
-        }
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        iframe {
-            display: block; /* iframes are inline by default */
-            background: #000;
-            border: none; /* Reset default border */
-            height: 100vh; /* Viewport-relative units */
-            width: 80vw;
-        }
-    </style>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
+      type="text/css"
+    />
 
-<body>
-<iframe src='https://mybinder.org/v2/gh/tatsath/fin-ml/master' width=100% height=100%%></iframe>   
-{% comment %} 
-<div class="bgimg">
-  <div class="topleft">
-    <p>Logo</p>
-  </div>
-  <div class="middle">
-    <h1>COMING SOON</h1>
-    <hr>
-    <p>35 days</p>
-  </div>
-  <div class="bottomleft">
-    <p>Some text</p>
-  </div>
-</div>
-</body> {% endcomment %}
-<script>
-var countDownDate = new Date("Jan 5, 2022 15:37:25").getTime();
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
 
-// Update the count down every 1 second
-var x = setInterval(function() {
+    <title>Google Maps Clone</title>
 
-  // Get todays date and time
-  var now = new Date().getTime();
+    <style>body {
+  margin: 0;
+}
+#map {
+  height: 90vh;
+  width: 70vw;
+}</style>
+    <script>
+mapboxgl.accessToken =
+  "pk.eyJ1Ijoic29tc3ViaHJhMSIsImEiOiJja2hkbDhuNGcwNnZnMnNuMGkwcjU3d3UwIn0.ZAeP5aPO4JkxNGD7dIEZtw";
 
-  // Find the distance between now an the count down date
-  var distance = countDownDate - now;
+const successLocation = (position) => {
+  //   console.log(position);
+  setupMap([position.coords.longitude, position.coords.latitude]);
+};
 
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+const errorLocation = () => {
+  setupMap([-2.24, 53.48]);
+};
 
-  // Display the result in an element with id="demo"
-  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
+const setupMap = (center) => {
+  const map = new mapboxgl.Map({
+    container: "map",
+    style: "mapbox://styles/mapbox/streets-v11",
+    zoom: 16,
+    center,
+  });
 
-  // If the count down is finished, write some text
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("demo").innerHTML = "EXPIRED";
-  }
-}, 1000);
+  const nav = new mapboxgl.NavigationControl();
+  map.addControl(nav);
 
-</script>
+  var directions = new MapboxDirections({
+    accessToken: mapboxgl.accessToken,
+  });
+
+  map.addControl(directions, "top-left");
+};
+
+navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
+  enableHighAccuracy: true,
+});</script>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+  
 </html>
-

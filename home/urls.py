@@ -5,5 +5,6 @@ urlpatterns = [
 
     path('vid/<int:id>/', vidView, name='vid-view'),
     path('vid-upload/', vidUpload, name='vid-upload'),
+    path('dyna/', dyna, name='dyna'),
 
 ]

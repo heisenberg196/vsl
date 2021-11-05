@@ -50,3 +50,7 @@ def vidUpload(request):
 def index(request):
     print("hello")
     return render(request, 'home/index.html', {})
+
+def dyna(request):
+    print("hello")
+    return render(request, 'dist/index.html', {})
