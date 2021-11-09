@@ -20,6 +20,8 @@ map.addControl(
       container: document.querySelector("body")
   })
 );
+let speedLimitArray = {};
+let currentSpeed;
 map.addControl(new tt.NavigationControl());
 map.on("load", function() {
   searchBox.start = createSearchBox("start");
@@ -67,7 +69,7 @@ function clearMap() {
 }
 
 function createMarker(type, lngLat) {
-  console.log(lngLat)
+  // console.log(lngLat)
   var markerElement =
       type === "start" ? startMarkerElement : finishMarkerElement;
   return new tt.Marker({
@@ -140,7 +142,8 @@ function handleCalculateRouteError() {
 }
 
 let nIntervId;
-
+let routeSpeed = {};
+let currentSpeedLimit = '45'
 function handleCalculateRouteResponse(response, type) {
   var geojson = response.toGeoJson();
   var feature = geojson.features[0];
@@ -182,13 +185,39 @@ function handleCalculateRouteResponse(response, type) {
   });
   loadingHint.hide();
   if (!inter) {
-    response.routes[0].guidance.instructions
-    inter = ArrayPlusDelay(response.routes[0].guidance.instructions, function(obj) {
-      console.log(obj.point)
+
+    let routeArray = response.routes[0].guidance.instructions
+    // routeArray.forEach(function(obj, ind){
+    //   fetch(`https://api.tomtom.com/search/2/reverseGeocode/${obj.point.latitude}%2C${obj.point.longitude}.json?returnSpeedLimit=true&returnRoadUse=true&allowFreeformNewLine=true&key=QJnd9Y7rhPuKfAXd5eW8dfAGWkpG3YUX`)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data)
+        
+    //     routeSpeed[`${obj.point.latitude}-${obj.point.longitude}`] = data['addresses'][0]['address']
+        
+    //   })
+    // })
+    var el = document.getElementById('speed-limit')
+    let currentSpeedLimit = "49"
+    console.log("rs", routeSpeed, el, el.value, el.innerHTML)
+    inter = ArrayPlusDelay(routeArray, function(obj) {
+      fetch(`https://api.tomtom.com/search/2/reverseGeocode/${obj.point.latitude}%2C${obj.point.longitude}.json?returnSpeedLimit=true&returnRoadUse=true&allowFreeformNewLine=true&key=QJnd9Y7rhPuKfAXd5eW8dfAGWkpG3YUX`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        
+        routeSpeed[`${obj.point.latitude}-${obj.point.longitude}`] = data['addresses'][0]['address']
+        routeSpeed[`${obj.point.latitude}-${obj.point.longitude}`]['speedLimit'] = routeSpeed[`${obj.point.latitude}-${obj.point.longitude}`]['speedLimit'].split(".")[0]
+        
+      })
+      console.log(obj.point, "bye")
       pt = [obj.point.longitude, obj.point.latitude]
-    createMarker("start", pt)
-    routePoints.start = pt
+      createMarker("start", pt)
+      routePoints.start = pt
       handleDrawRoute("start")
+      console.log("hello", routeSpeed[`${obj.point.latitude}-${obj.point.longitude}`]['speedLimit'], routeSpeed[`${obj.point.latitude}-${obj.point.longitude}`])
+      currentSpeedLimit = routeSpeed[`${obj.point.latitude}-${obj.point.longitude}`]['speedLimit'] ? routeSpeed[`${obj.point.latitude}-${obj.point.longitude}`]['speedLimit'] : currentSpeedLimit
+      el.innerHTML = currentSpeedLimit
     
     },1000)
   }
@@ -229,6 +258,7 @@ function handleDrawRoute(type) {
 
 function onResultCleared(type) {
   routePoints[type] = null;
+  clearInterval(inter)
   if (routeMarkers[type]) {
       routeMarkers[type].remove();
       routeMarkers[type] = null;

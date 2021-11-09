@@ -1,0 +1,85 @@
+.tt-side-panel-1 {
+    background-color: #f2f2f2;
+    box-shadow: 0 4px 24px 0 rgba(0, 0, 0, .16); 
+    text-align: center;
+    font-family: Gotham, Helvetica, Arial, sans-serif;
+    height: 100vh;
+    justify-content: space-between;
+    overflow: visible;
+    margin: 0;
+    width: 176px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/*Traffic Symbol*/
+#road-sign {
+    margin-left: 20px;
+    width: 130px;
+    height: 130px;
+    background-color: #FFFFFF;
+    box-shadow: 10px 10px 5px #888888;
+    border: 20px solid #EE0000;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+    
+  #speed-limit {
+    text-align: center;
+    padding-top: 10px;
+    margin: auto; /*Will center the text*/
+    color: #000000;
+    font-family: Trebuchet MS;
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 0px;
+  }
+
+  #speed-unit {
+    text-align: center;
+    margin: auto; /*Will center the text*/
+    color: #000000;
+    font-family: Trebuchet MS;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-top: -7px;
+  }
+
+  /*Traffic Symbol-2*/
+#road-sign-2 {
+    margin-left: 20px;
+    width: 130px;
+    height: 130px;
+    background-color: #FFFFFF;
+    box-shadow: 10px 10px 5px #888888;
+    border: 20px solid #EE0000;
+    border-radius: 100px;
+  }
+    
+  #speed-limit-2 {
+    text-align: center;
+    padding-top: 10px;
+    margin: auto; /*Will center the text*/
+    color: #000000;
+    font-family: Trebuchet MS;
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 0px;
+  }
+
+  .tt-side-panel-1 h4{
+      margin-top: 0px;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-bottom: 0px;
+  }
+
+  .tt-side-panel-1 h1{
+    margin-bottom: 10px;
+}
+
+#road-name{
+    padding-left: 5px;
+    padding-right: 5px;
+}
